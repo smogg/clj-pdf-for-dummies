@@ -49,6 +49,28 @@
     body)))
 
 ; -- Pages ---------------------------------------------------------------------
+(defn cover-text
+ [g2d width]
+ (let [t1 "clj-pdf"
+       t2 "FOR"
+       t3 "DUMMIES"
+       center (partial center-font-x g2d width)
+       special-elite-16 (resize-font special-elite-font 16)
+       special-elite-50 (resize-font special-elite-font 50)
+       lato-bold-italic-40 (resize-font lato-bold-italic 40)]
+   (doto g2d
+    ; draw first string
+    (.setFont lato-bold-italic-40)
+    (.drawString t1 (center lato-bold-italic-40 t1) 50)
+
+    ; draw second string
+    (.setFont special-elite-16)
+    (.drawString t2 (center special-elite-16 t2) 100)
+
+    ; draw third string
+    (.setFont special-elite-50)
+    (.drawString t3 (center special-elite-50 t3) 170))))
+
 (defn cover
   [])
 
@@ -63,31 +85,14 @@
        y 100]
    [:graphics {:translate [x y]}
     (fn [g2d]
-      (let [t1 "clj-pdf"
-            t2 "FOR"
-            t3 "DUMMIES"
-            center (partial center-font-x g2d width)
-            special-elite-16 (resize-font special-elite-font 16)
-            special-elite-50 (resize-font special-elite-font 50)
-            lato-bold-italic-40 (resize-font lato-bold-italic 40)]
-        (doto g2d
-          (.setColor java.awt.Color/BLACK)
-          ; draw rectangle
-          (.fillRect 0 0 width height)
+      (doto g2d
+        (.setColor java.awt.Color/BLACK)
+        ; draw rectangle
+        (.fillRect 0 0 width height)
+        (.setColor java.awt.Color/WHITE))
+      (cover-text g2d width))]))
 
-          (.setColor java.awt.Color/WHITE)
 
-          ; draw first string
-          (.setFont lato-bold-italic-40)
-          (.drawString t1 (center lato-bold-italic-40 t1) 50)
-
-          ; draw second string
-          (.setFont special-elite-16)
-          (.drawString t2 (center special-elite-16 t2) 100)
-
-          ; draw third string
-          (.setFont special-elite-50)
-          (.drawString t3 (center special-elite-50 t3) 170))))]))
 
 ; -- Rendering -----------------------------------------------------------------
 (defn -main
