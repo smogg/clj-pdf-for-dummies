@@ -59,6 +59,7 @@
        special-elite-50 (resize-font special-elite-font 50)
        lato-bold-italic-40 (resize-font lato-bold-italic 40)]
    (doto g2d
+    (.setColor java.awt.Color/WHITE)
     ; draw first string
     (.setFont lato-bold-italic-40)
     (.drawString t1 (center lato-bold-italic-40 t1) 50)
@@ -72,7 +73,11 @@
     (.drawString t3 (center special-elite-50 t3) 170))))
 
 (defn cover
-  [])
+  []
+  [[:graphics {:translate [0 100] :rotate -0.05}
+    #(.fillRect % -25 0 (+ page-width 50) 300)]
+   [:graphics {:translate [0 150] :rotate -0.05}
+    #(cover-text % page-width)]])
 
 (defn draw-string-in-center
  [g2d text y width]
@@ -86,12 +91,8 @@
    [:graphics {:translate [x y]}
     (fn [g2d]
       (doto g2d
-        (.setColor java.awt.Color/BLACK)
-        ; draw rectangle
         (.fillRect 0 0 width height)
-        (.setColor java.awt.Color/WHITE))
-      (cover-text g2d width))]))
-
+        (cover-text width)))]))
 
 
 ; -- Rendering -----------------------------------------------------------------
@@ -110,6 +111,7 @@
        :letterhead (cover)
        :footer {:start-page 2 :align :center}
        :register-system-fonts? true}
+      [:pagebreak]
       title-square]
      dest)
     (println "Generated pdf at" dest)))
