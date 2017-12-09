@@ -6,4 +6,5 @@
   :main clj-pdf-for-dummies.core
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/tools.cli "0.3.5"]
+                 [hiccup "1.0.5"]
                  [clj-pdf "2.2.30"]])
