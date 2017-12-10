@@ -110,8 +110,8 @@
          (.fillRect -25 335 width 5))))]
    [:graphics {:translate [0 185] :rotate -0.05}
     #(cover-text % page-width)]
-   [:svg {:scale [-0.5 0.5]
-          :translate [500 600]}
+   [:svg {:scale 0.6
+          :translate [100 480]}
     (io/resource "img/face.svg")]])
 
 (defn draw-string-in-center
