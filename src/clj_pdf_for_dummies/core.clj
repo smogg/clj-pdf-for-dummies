@@ -2,7 +2,8 @@
   (:require [clj-pdf.core :as pdf]
             [hiccup.core :refer [html]]
             [clojure.tools.cli :refer [parse-opts]]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clojure.string :as str])
   (:gen-class))
 
 ; -- Fonts ---------------------------------------------------------------------
@@ -37,6 +38,18 @@
 ; -- Colors -------------------------------------------------------------------
 (def black "#000000")
 (def white "#ffffff")
+(def yellow "#FCEE37")
+(def turquoise "#1ABC9C")
+
+(defn hex->rgb-int
+  "Given a hexadecimal string (starting with `#`) representing a color, returns
+  the corresponding RGB integer."
+  [c]
+  (-> c
+      (str/split #"#")
+      rest
+      first
+      (Integer/parseInt 16)))
 
 ; -- Helpers -------------------------------------------------------------------
 (defn svg
@@ -74,9 +87,28 @@
 
 (defn cover
   []
-  [[:graphics {:translate [0 100] :rotate -0.05}
-    #(.fillRect % -25 0 (+ page-width 50) 300)]
-   [:graphics {:translate [0 150] :rotate -0.05}
+  [[:graphics {:under true}
+    (fn [g2d]
+      (doto g2d
+        (.setColor (-> yellow hex->rgb-int java.awt.Color.))
+        (.fillRect 0 0 page-width page-height)))]
+   [:graphics {:translate [0 100] :rotate -0.05}
+    (fn [g2d]
+     (let [width (+ page-width 50)]
+       (doto g2d
+         (.setColor (-> turquoise hex->rgb-int java.awt.Color.))
+         (.setFont (java.awt.Font. "GillSans-SemiBold" java.awt.Font/BOLD 22))
+         (.drawString "Start making PDFs today!" margin-left 0)
+         (.setFont (java.awt.Font. "GillSans-SemiBold" java.awt.Font/PLAIN 14))
+         (.drawString
+          "Your absolutely useless and way too short guide to the awesome clj-pdf Clojure library."
+          margin-left
+          20)
+         (.setColor java.awt.Color/BLACK)
+         (.fillRect -25 35 width 300)
+         (.setColor (-> turquoise hex->rgb-int java.awt.Color.))
+         (.fillRect -25 335 width 5))))]
+   [:graphics {:translate [0 185] :rotate -0.05}
     #(cover-text % page-width)]])
 
 (defn draw-string-in-center
