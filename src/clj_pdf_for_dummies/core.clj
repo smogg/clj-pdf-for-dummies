@@ -144,8 +144,10 @@
        :left-margin margin-left
        :right-magin margin-right
        :letterhead (cover)
-       :footer {:start-page 2 :align :center}
-       :register-system-fonts? true}
+       :footer {:start-page 2
+                :align :center}
+       :register-system-fonts? true
+       :pages true}
       [:pagebreak]
       title-square]
      dest)
