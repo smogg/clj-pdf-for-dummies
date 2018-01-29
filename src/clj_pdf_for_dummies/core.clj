@@ -116,10 +116,6 @@
           :translate [100 480]}
     (io/resource "img/face.svg")]])
 
-(defn draw-string-in-center
-  [g2d text y width]
-  (.drawString g2d 0 0))
-
 (def title-square
   (let [width 400
         height 200
